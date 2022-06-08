@@ -5,22 +5,14 @@
  *
  */
 
-variable "common_tags" {
-  description = "(Optional) Map of common tags for all taggable resources"
-  type        = map(string)
-}
+variable "resource_name_prefix" { type = string }
 
 variable "resource_group" {
-  description = "Azure resource group in which resources will be deployed"
+  default     = null
+  description = "(Optional) Azure resource group in which resources will be deployed; omit to create one"
 
   type = object({
     location = string
     name     = string
   })
 }
-
-variable "resource_name_prefix" {
-  description = "Prefix for resource names (e.g. \"prod\")"
-  type        = string
-}
-

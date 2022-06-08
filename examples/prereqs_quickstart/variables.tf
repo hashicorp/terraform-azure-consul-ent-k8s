@@ -41,11 +41,27 @@ variable "common_tags" {
 
 variable "location" {
   default     = "East US"
-  description = "The location/region where the virtual network is created"
+  description = "(Optional) The location/region to create the resource group (if one is not provided)"
   type        = string
+}
+
+variable "resource_group" {
+  default     = null
+  description = "(Optional) Azure resource group in which resources will be deployed; omit to create one"
+
+  type = object({
+    location = string
+    name     = string
+  })
 }
 
 variable "resource_name_prefix" {
   description = "Prefix for resource names (e.g. \"prod\")"
   type        = string
+
+  # azurerm_key_vault name must not exceed 24 characters and has this as a prefix
+  validation {
+    condition     = length(var.resource_name_prefix) < 12 && (replace(var.resource_name_prefix, " ", "") == var.resource_name_prefix)
+    error_message = "The resource_name_prefix value must be fewer than 12 characters and may not contain spaces."
+  }
 }

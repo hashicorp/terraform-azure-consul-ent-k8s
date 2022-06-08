@@ -25,9 +25,13 @@ variable "common_tags" {
   type        = map(string)
 }
 
-variable "location" {
-  description = "The location/region where the virtual network is created"
-  type        = string
+variable "resource_group" {
+  description = "Azure resource group in which resources will be deployed"
+
+  type = object({
+    location = string
+    name     = string
+  })
 }
 
 variable "resource_name_prefix" {

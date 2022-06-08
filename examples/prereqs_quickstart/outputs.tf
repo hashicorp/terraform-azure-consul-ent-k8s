@@ -22,6 +22,6 @@ output "key_vault_name" {
 }
 
 output "resource_group_name" {
-  value = module.vnet.resource_group.name
+  value = var.resource_group == null ? azurerm_resource_group.aks[0].name : var.resource_group.name
 }
 

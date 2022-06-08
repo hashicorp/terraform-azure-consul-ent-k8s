@@ -13,9 +13,9 @@ resource "random_id" "key_vault_suffix" {
 
 resource "azurerm_key_vault" "federation" {
   enable_rbac_authorization  = true
-  location                   = var.location
+  location                   = var.resource_group.location
   name                       = "${var.resource_name_prefix}-aks-${random_id.key_vault_suffix.hex}"
-  resource_group_name        = var.resource_group_name
+  resource_group_name        = var.resource_group.name
   sku_name                   = "standard"
   soft_delete_retention_days = 7
   tags                       = var.common_tags
