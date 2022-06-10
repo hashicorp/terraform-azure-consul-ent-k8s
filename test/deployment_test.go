@@ -199,8 +199,7 @@ func TestClusterDeployment(t *testing.T) {
 	terraform.Apply(t, validationTerraformOptions)
 	// Gather validation outputs
 	consulWanMembers := terraform.Output(t, validationTerraformOptions, "consul_wan_members")
-	// Availability zone configuration check is disabled until https://github.com/hashicorp/terraform-azure-consul-ent-k8s/pull/4 is merged
-	// nodePoolAvailabilityZones := terraform.Output(t, validationTerraformOptions, "node_pool_availability_zones")
+	nodePoolAvailabilityZones := terraform.Output(t, validationTerraformOptions, "node_pool_availability_zones")
 
 	// Perform validation comparisons and collect pass/fail results
 	_ = os.Unsetenv("TF_WORKSPACE")
@@ -214,7 +213,7 @@ func TestClusterDeployment(t *testing.T) {
 	}
 
 	// Ensure Consul node pool is split across availability zones
-	// testResults = append(testResults, assert.Equal(t, "1,2,3", nodePoolAvailabilityZones))
+	testResults = append(testResults, assert.Equal(t, "1,2,3", nodePoolAvailabilityZones))
 
 	// Comparisons complete; conditionally exit
 	if os.Getenv("GITHUB_ACTIONS") == "" {
