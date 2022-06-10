@@ -33,6 +33,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "cluster" {
   vm_size               = "Standard_D2s_v3"
   node_count            = 5
   vnet_subnet_id        = var.aks_subnet_id
+  zones                 = ["1", "2", "3"]
 
   tags = var.common_tags
 }
