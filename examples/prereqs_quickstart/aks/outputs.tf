@@ -13,3 +13,6 @@ output "aks_name" {
   value = azurerm_kubernetes_cluster.cluster.name
 }
 
+output "nodepool_name" {
+  value = azurerm_kubernetes_cluster_node_pool.cluster.name
+}

@@ -13,6 +13,14 @@ output "aks_2_name" {
   value = module.aks_2.aks_name
 }
 
+output "aks_1_nodepool_name" {
+  value = module.aks_1.nodepool_name
+}
+
+output "aks_2_nodepool_name" {
+  value = module.aks_2.nodepool_name
+}
+
 output "key_vault_id" {
   value = module.key_vault.key_vault_id
 }
@@ -22,6 +30,6 @@ output "key_vault_name" {
 }
 
 output "resource_group_name" {
-  value = module.vnet.resource_group.name
+  value = var.resource_group == null ? azurerm_resource_group.aks[0].name : var.resource_group.name
 }
 

@@ -5,16 +5,10 @@
  *
  */
 
-resource "azurerm_resource_group" "aks" {
-  location = var.location
-  name     = "${var.resource_name_prefix}-aks"
-  tags     = var.common_tags
-}
-
 resource "azurerm_virtual_network" "aks" {
-  location            = azurerm_resource_group.aks.location
+  location            = var.resource_group.location
   name                = "${var.resource_name_prefix}-aks"
-  resource_group_name = azurerm_resource_group.aks.name
+  resource_group_name = var.resource_group.name
   tags                = var.common_tags
 
   address_space = [
@@ -24,7 +18,7 @@ resource "azurerm_virtual_network" "aks" {
 
 resource "azurerm_subnet" "aks_1" {
   name                 = "${var.resource_name_prefix}-aks-1"
-  resource_group_name  = azurerm_resource_group.aks.name
+  resource_group_name  = var.resource_group.name
   virtual_network_name = azurerm_virtual_network.aks.name
 
   address_prefixes = [
@@ -38,7 +32,7 @@ resource "azurerm_subnet" "aks_1" {
 
 resource "azurerm_subnet" "aks_2" {
   name                 = "${var.resource_name_prefix}-aks-2"
-  resource_group_name  = azurerm_resource_group.aks.name
+  resource_group_name  = var.resource_group.name
   virtual_network_name = azurerm_virtual_network.aks.name
 
   address_prefixes = [

@@ -5,14 +5,8 @@
  *
  */
 
-output "aks_subnet_id_1" {
-  value = azurerm_subnet.aks_1.id
-}
-
-output "aks_subnet_id_2" {
-  value = azurerm_subnet.aks_2.id
-}
-
-output "vnet_id" {
-  value = azurerm_virtual_network.aks.id
-}
+variable "key_vault_id" { type = string }
+variable "key_vault_name" { type = string }
+variable "consul_license" { type = string }
+variable "cluster_name" { type = string }
+variable "resource_group_name" { type = string }
