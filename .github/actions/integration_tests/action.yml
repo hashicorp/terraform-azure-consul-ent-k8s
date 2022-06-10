@@ -22,6 +22,11 @@ runs:
         mv $TFENV_DL_TMP/tfenv-2989f1a5560e313f70f7711be592ddb68418862b ~/.tfenv
         echo "$HOME/.tfenv/bin" >> $GITHUB_PATH
       shell: bash
+    - run: echo "Disabling Key Vault purge"  # RG-scoped IAM principal doesn't have the subscription-scope access to purge soft-deleted Key Vaults
+      shell: bash
+    - name: Disable Key Vault purge
+      run: sed -i 's/^    resource_group {/    key_vault { purge_soft_delete_on_destroy = false }\n    resource_group {/' examples/prereqs_quickstart/main.tf
+      shell: bash
     - run: echo "Deploying and running tests"
       shell: bash
     - name: Deploy and run tests
