@@ -31,8 +31,14 @@ output "resource_group_name" {
 output "primary_cluster_name" {
   value = module.quickstart.aks_1_name
 }
+output "primary_cluster_nodepool_name" {
+  value = module.quickstart.aks_1_nodepool_name
+}
 output "secondary_cluster_name" {
   value = module.quickstart.aks_2_name
+}
+output "secondary_cluster_nodepool_name" {
+  value = module.quickstart.aks_2_nodepool_name
 }
 output "key_vault_id" {
   value = module.quickstart.key_vault_id

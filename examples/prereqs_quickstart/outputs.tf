@@ -13,6 +13,14 @@ output "aks_2_name" {
   value = module.aks_2.aks_name
 }
 
+output "aks_1_nodepool_name" {
+  value = module.aks_1.nodepool_name
+}
+
+output "aks_2_nodepool_name" {
+  value = module.aks_2.nodepool_name
+}
+
 output "key_vault_id" {
   value = module.key_vault.key_vault_id
 }

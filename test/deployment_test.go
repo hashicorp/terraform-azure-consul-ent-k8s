@@ -101,6 +101,7 @@ func TestClusterDeployment(t *testing.T) {
 	secondaryClusterName := terraform.Output(t, prereqsTerraformOptions, "secondary_cluster_name")
 	keyVaultId := terraform.Output(t, prereqsTerraformOptions, "key_vault_id")
 	keyVaultName := terraform.Output(t, prereqsTerraformOptions, "key_vault_name")
+	primaryClusterNodePoolName := terraform.Output(t, prereqsTerraformOptions, "primary_cluster_nodepool_name")
 
 	// Run primary module, and setup its destruction during CI
 	// (non-CI destruction is conditionally configured after tests below)
@@ -184,7 +185,7 @@ func TestClusterDeployment(t *testing.T) {
 	validationTerraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{TerraformDir: validationModulePath, Lock: true})
 	validationWorkspaceName := baseWorkspaceName + "-" + filepath.Base(validationModulePath)
 	removeAutoTfvars(t, validationModulePath)
-	validationTfVars := fmt.Sprintf("cluster_name        = \"%s\"\nresource_group_name = \"%s\"\n", primaryClusterName, resourceGroupName)
+	validationTfVars := fmt.Sprintf("cluster_name        = \"%s\"\nnode_pool_name      = \"%s\"\nresource_group_name = \"%s\"\n", primaryClusterName, primaryClusterNodePoolName, resourceGroupName)
 	ioutil.WriteFile(filepath.Join(validationModulePath, deployEnv+".auto.tfvars"), []byte(validationTfVars), 0644)
 	if os.Getenv("GITHUB_ACTIONS") != "" {
 		defer tfDestroyAndDeleteWorkspace(t, validationTerraformOptions, tfcOrg, tfcToken, validationWorkspaceName)
@@ -198,6 +199,8 @@ func TestClusterDeployment(t *testing.T) {
 	terraform.Apply(t, validationTerraformOptions)
 	// Gather validation outputs
 	consulWanMembers := terraform.Output(t, validationTerraformOptions, "consul_wan_members")
+	// Availability zone configuration check is disabled until https://github.com/hashicorp/terraform-azure-consul-ent-k8s/pull/4 is merged
+	// nodePoolAvailabilityZones := terraform.Output(t, validationTerraformOptions, "node_pool_availability_zones")
 
 	// Perform validation comparisons and collect pass/fail results
 	_ = os.Unsetenv("TF_WORKSPACE")
@@ -209,6 +212,9 @@ func TestClusterDeployment(t *testing.T) {
 			testResults = append(testResults, assert.Contains(t, consulWanMembers, fmt.Sprintf("consul-server-%s.dc%s", serverNum, dcNum)))
 		}
 	}
+
+	// Ensure Consul node pool is split across availability zones
+	// testResults = append(testResults, assert.Equal(t, "1,2,3", nodePoolAvailabilityZones))
 
 	// Comparisons complete; conditionally exit
 	if os.Getenv("GITHUB_ACTIONS") == "" {

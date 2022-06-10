@@ -53,3 +53,13 @@ resource "testingtoolsk8s_exec" "consul_wan_members" {
 output "consul_wan_members" {
   value = testingtoolsk8s_exec.consul_wan_members.stdout
 }
+
+data "azurerm_kubernetes_cluster_node_pool" "cluster" {
+  name                    = var.node_pool_name
+  kubernetes_cluster_name = var.cluster_name
+  resource_group_name     = var.resource_group_name
+}
+
+output "node_pool_availability_zones" {
+  value = join(",", sort(data.azurerm_kubernetes_cluster_node_pool.cluster.zones))
+}
