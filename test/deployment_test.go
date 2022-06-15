@@ -66,7 +66,7 @@ func TestClusterDeployment(t *testing.T) {
 		}
 	}
 	if len(deployEnv) > 11 {
-		logger.Log(t, fmt.Sprintf("The chosen or autoconfigured resource name prefix (%s) exceeds 11 characters. Choose a new one by setting it as an enironment variable -- e.g. export DEPLOY_ENV='%s'", deployEnv, deployEnv[0:11]))
+		logger.Log(t, fmt.Sprintf("The chosen or autoconfigured resource name prefix (%s) exceeds 11 characters. Choose a new one by setting it as an environment variable -- e.g. export DEPLOY_ENV='%s'", deployEnv, deployEnv[0:11]))
 		t.FailNow()
 	}
 
