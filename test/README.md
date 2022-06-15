@@ -20,7 +20,6 @@ go test -v -timeout 120m
 
 Optional environment variables:
   * `DEPLOY_ENV` - set this to change the prefix applied to resource names.
-  * `CLOUDSDK_COMPUTE_REGION` - set the region in which resources are deployed
   * `TEST_CONSUL_ENT_LICENSE` - See Prereqs above about options for providing the Consul Enterprise license
   * `TEST_DONT_DESTROY_UPON_SUCCESS` - set this to skip running terraform destroy upon testing success
   * `TEST_RESOURCE_GROUP_LOCATION` & `TEST_RESOURCE_GROUP_NAME` - set these to provide an existing Resource Group for resources
